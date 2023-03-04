@@ -3,32 +3,32 @@ package com.driver.model;
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String userName;
-
+    private String username;
     private String password;
-
     private String originalIp;
     private String maskedIp;
-    private boolean connected;
+    private Boolean connected;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Connection> connectionList;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    List<Connection> connection;
+    @ManyToMany
+    @JoinColumn
+    private List<ServiceProvider> serviceProviderList;
 
-    // parent w r t country'
-    @OneToOne(mappedBy = "country",cascade = CascadeType.ALL)
-    User user;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Country originalCountry;
 
-    // parent w r t service provider
-    @ManyToMany(mappedBy = "users",cascade = CascadeType.ALL)
-    List<ServiceProvider> serviceProviderList;
 
     public User() {
     }
+
 
     public int getId() {
         return id;
@@ -38,12 +38,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -70,28 +70,20 @@ public class User {
         this.maskedIp = maskedIp;
     }
 
-    public boolean isConnected() {
+    public Boolean getConnected() {
         return connected;
     }
 
-    public void setConnected(boolean connected) {
+    public void setConnected(Boolean connected) {
         this.connected = connected;
     }
 
-    public List<Connection> getConnection() {
-        return connection;
+    public List<Connection> getConnectionList() {
+        return connectionList;
     }
 
-    public void setConnection(List<Connection> connection) {
-        this.connection = connection;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setConnectionList(List<Connection> connectionList) {
+        this.connectionList = connectionList;
     }
 
     public List<ServiceProvider> getServiceProviderList() {
@@ -100,5 +92,13 @@ public class User {
 
     public void setServiceProviderList(List<ServiceProvider> serviceProviderList) {
         this.serviceProviderList = serviceProviderList;
+    }
+
+    public Country getOriginalCountry() {
+        return originalCountry;
+    }
+
+    public void setOriginalCountry(Country originalCountry) {
+        this.originalCountry = originalCountry;
     }
 }

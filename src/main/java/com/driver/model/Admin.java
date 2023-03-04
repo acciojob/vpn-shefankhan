@@ -4,22 +4,19 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="admin")
+@Table(name = "admins")
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String username;
     private String password;
 
-
-    // parent w r t service provider
-    @OneToMany(mappedBy = "admin",cascade = CascadeType.ALL)
-    List<ServiceProvider> serviceProviders;
-
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
+    private List<ServiceProvider> serviceProviders;
 
     public Admin() {
-
     }
 
     public int getId() {

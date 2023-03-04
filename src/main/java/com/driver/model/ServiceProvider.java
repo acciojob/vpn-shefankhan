@@ -4,40 +4,27 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="service_provider")
+@Table(name = "serviceProviders")
 public class ServiceProvider {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String name;
-
-      // child w r t admin
-
     @ManyToOne
     @JoinColumn
-    Admin admin;
+    private Admin admin;
 
+    @ManyToMany(mappedBy = "serviceProviderList",cascade = CascadeType.ALL)
+    private List<User> users;
+    @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
+    private List<Country> countryList;
 
-    // parent w r t connection
     @OneToMany(mappedBy = "serviceProvider",cascade = CascadeType.ALL)
-    List<Connection> connectionList;
-
-    // parent w r t country
-    @OneToMany(mappedBy = "serviceProvider",cascade = CascadeType.ALL)
-    List<Country> countryList;
-
-    // child w r t user
-    @ManyToMany
-    @JoinColumn
-    User users;
-
-
-
+    private List<Connection> connectionList ;
 
     public ServiceProvider() {
     }
+
 
     public int getId() {
         return id;
@@ -63,12 +50,12 @@ public class ServiceProvider {
         this.admin = admin;
     }
 
-    public List<Connection> getConnectionList() {
-        return connectionList;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setConnectionList(List<Connection> connectionList) {
-        this.connectionList = connectionList;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public List<Country> getCountryList() {
@@ -79,11 +66,11 @@ public class ServiceProvider {
         this.countryList = countryList;
     }
 
-    public User getUsers() {
-        return users;
+    public List<Connection> getConnectionList() {
+        return connectionList;
     }
 
-    public void setUsers(User users) {
-        this.users = users;
+    public void setConnectionList(List<Connection> connectionList) {
+        this.connectionList = connectionList;
     }
 }
